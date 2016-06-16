@@ -11,7 +11,11 @@ class OwnershipsController < ApplicationController
     # itemsテーブルに存在しない場合は楽天のデータを登録する。
     if @item.new_record?
       # TODO 商品情報の取得 RakutenWebService::Ichiba::Item.search を用いてください
-      items = {}
+      items = {
+        RakutenWebService::Ichiba::Item.search(
+        itemCode: params[:item_code]
+      )
+      }
 
       item                  = items.first
       @item.title           = item['itemName']
@@ -20,6 +24,7 @@ class OwnershipsController < ApplicationController
       @item.large_image     = item['mediumImageUrls'].first['imageUrl'].gsub('?_ex=128x128', '')
       @item.detail_page_url = item['itemUrl']
       @item.save!
+      
     end
 
     # TODO ユーザにwant or haveを設定する

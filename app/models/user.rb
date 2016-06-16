@@ -37,20 +37,29 @@ class User < ActiveRecord::Base
 
   ## TODO 実装
   def have(item)
+    following_relationships.find_or_create_by(followed_id: item.id)
   end
 
   def unhave(item)
+    following_relationship = following_relationships.find_by(followed_id: item.id)
+    following_relationship.destroy if following_relationship
   end
 
   def have?(item)
+    following_items.include?(item)
   end
 
   def want(item)
+    following_relationships.find_or_create_by(followed_id: item.id)
   end
 
   def unwant(item)
+    following_relationship = following_relationships.find_by(followed_id: item.id)
+    following_relationship.destroy if following_relationship
   end
 
   def want?(item)
+    following_items.include?(item)
   end
+  
 end
